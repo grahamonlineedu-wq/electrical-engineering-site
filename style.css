@@ -1,0 +1,467 @@
+/* =========================================================
+   VOLT-TECH ENTERPRISE MAIN STYLESHEET
+   Branding: Navy Blue, Electric Cyan, Gold Accent
+   ========================================================= */
+
+:root {
+  --primary-dark: #0b132b;
+  --primary-navy: #1c2541;
+  --accent-cyan: #00b4d8;
+  --accent-gold: #ffb703;
+  --light-bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-dark: #1d2d44;
+  --text-muted: #6c757d;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-dark);
+  background-color: var(--white);
+  line-height: 1.6;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ================= TOP BAR ================= */
+.top-bar {
+  background-color: var(--primary-dark);
+  color: #e0e1dd;
+  padding: 8px 0;
+  font-size: 13px;
+  border-bottom: 2px solid var(--accent-cyan);
+}
+
+.top-bar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.social-links-top a {
+  color: #e0e1dd;
+  margin-left: 12px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.social-links-top a:hover {
+  color: var(--accent-cyan);
+}
+
+/* ================= HEADER & NAVBAR ================= */
+.site-header {
+  background-color: var(--primary-navy);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.brand-logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.brand-logo .accent-text {
+  color: var(--accent-cyan);
+}
+
+.nav-menu a {
+  color: #e0e1dd;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-menu a:hover {
+  color: var(--accent-cyan);
+}
+
+.cart-btn {
+  background: var(--accent-cyan);
+  border: none;
+  color: var(--white);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  position: relative;
+  font-size: 16px;
+}
+
+.cart-badge {
+  background-color: var(--accent-gold);
+  color: #000;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  margin-left: 6px;
+}
+
+/* ================= HERO SECTION ================= */
+.hero-section {
+  background: linear-gradient(rgba(11, 19, 43, 0.85), rgba(11, 19, 43, 0.85)), url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1350&q=80');
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+  padding: 100px 0;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 38px;
+  margin-bottom: 15px;
+}
+
+.hero-content p {
+  font-size: 18px;
+  max-width: 750px;
+  margin: 0 auto 30px auto;
+  color: #d8f3dc;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 5px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--accent-cyan);
+  color: var(--white);
+}
+
+.btn-secondary {
+  background-color: #25d366;
+  color: var(--white);
+}
+
+/* ================= SERVICES ================= */
+.section-padding {
+  padding: 70px 0;
+}
+
+.bg-alt {
+  background-color: var(--light-bg);
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-title h2 {
+  font-size: 30px;
+  color: var(--primary-navy);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.service-card {
+  background-color: var(--card-bg);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-top: 4px solid var(--accent-cyan);
+}
+
+.service-icon {
+  font-size: 36px;
+  color: var(--accent-cyan);
+  margin-bottom: 15px;
+}
+
+/* ================= CATALOG & PRODUCTS ================= */
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border: 1px solid var(--primary-navy);
+  background: transparent;
+  color: var(--primary-navy);
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.filter-btn.active, .filter-btn:hover {
+  background-color: var(--primary-navy);
+  color: var(--white);
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.product-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.product-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background-color: #eee;
+}
+
+.product-info {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-title {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.product-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-navy);
+  margin-bottom: 12px;
+}
+
+.product-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.btn-add-cart {
+  background: var(--accent-cyan);
+  color: var(--white);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-grow: 1;
+  font-weight: 600;
+}
+
+.btn-spec {
+  background: #e9ecef;
+  color: var(--text-dark);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* ================= PULLQUOTE ================= */
+.quote-section {
+  background-color: var(--primary-navy);
+  color: var(--white);
+  padding: 50px 0;
+  text-align: center;
+}
+
+.engineer-quote {
+  font-size: 22px;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+/* ================= FOOTER ================= */
+.site-footer {
+  background-color: var(--primary-dark);
+  color: #e0e1dd;
+  padding: 60px 0 20px 0;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.footer-col h3 {
+  color: var(--accent-cyan);
+  margin-bottom: 15px;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  color: #e0e1dd;
+  text-decoration: none;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.social-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--primary-navy);
+  color: #fff;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.footer-bottom {
+  border-top: 1px solid #1c2541;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* ================= CART DRAWER ================= */
+.cart-drawer-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 1001;
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0; right: -400px; width: 350px; height: 100%;
+  background: #fff;
+  z-index: 1002;
+  transition: right 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-drawer.open {
+  right: 0;
+}
+
+.cart-drawer-overlay.open {
+  display: block;
+}
+
+.cart-header {
+  padding: 15px;
+  background: var(--primary-navy);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.cart-items {
+  padding: 15px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.cart-footer {
+  padding: 15px;
+  border-top: 1px solid #eee;
+}
+
+.btn-whatsapp-checkout {
+  width: 100%;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+/* ================= SPEC MODAL ================= */
+.spec-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  z-index: 1003;
+}
+
+.spec-modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%; max-width: 500px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  display: none;
+  z-index: 1004;
+}
+
+.spec-modal.open, .spec-modal-overlay.open {
+  display: block;
+}
+
