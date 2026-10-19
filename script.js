@@ -1,9 +1,3 @@
-/* =========================================================
-   VOLT-TECH ENTERPRISE INTERACTIVE LOGIC
-   Catalog rendering, filtering, shopping cart, and WhatsApp order checkout
-   ========================================================= */
-
-// Catalog Inventory
 const products = [
   {
     id: "vt-01",
@@ -11,7 +5,7 @@ const products = [
     category: "inverters",
     price: 450000,
     image: "https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=500&q=80",
-    specs: "Pure Sine Wave, 48V DC Input, Pure Copper Transformer, Integrated MPPT Solar Charge Controller."
+    specs: "Pure Sine Wave, 48V DC Input, Pure Copper Transformer, Integrated MPPT Solar Controller."
   },
   {
     id: "vt-02",
@@ -19,7 +13,7 @@ const products = [
     category: "switchgear",
     price: 185000,
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=500&q=80",
-    specs: "250A Rating, Dual Power Line Controller, Mechanical Interlock, LED Fault Indicators."
+    specs: "250A Rating, Dual Power Line Controller, Mechanical Interlock, Status LEDs."
   },
   {
     id: "vt-03",
@@ -27,7 +21,7 @@ const products = [
     category: "cables",
     price: 320000,
     image: "https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?auto=format&fit=crop&w=500&q=80",
-    specs: "4-Core XLPE Insulated, Steel Wire Armoured, Flame Retardant Heavy Duty Grade."
+    specs: "4-Core XLPE Insulated, Steel Wire Armoured Grade."
   },
   {
     id: "vt-04",
@@ -35,13 +29,12 @@ const products = [
     category: "switchgear",
     price: 65000,
     image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=500&q=80",
-    specs: "3-Pole Molded Case Circuit Breaker, Thermal-Magnetic Adjustable Trip Unit."
+    specs: "3-Pole Molded Case Breaker, Thermal-Magnetic Adjustable Unit."
   }
 ];
 
 let cart = [];
 
-// DOM Elements
 const productsContainer = document.getElementById('products-container');
 const cartOverlay = document.getElementById('cart-overlay');
 const cartDrawer = document.getElementById('cart-drawer');
@@ -57,12 +50,10 @@ const specModal = document.getElementById('spec-modal');
 const specModalBody = document.getElementById('spec-modal-body');
 const closeSpecModal = document.getElementById('close-spec-modal');
 
-// Format Price
 function formatCurrency(amount) {
   return '₦' + amount.toLocaleString('en-NG', { minimumFractionDigits: 2 });
 }
 
-// Render Products
 function renderProducts(filter = 'all') {
   productsContainer.innerHTML = '';
   const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
@@ -85,7 +76,6 @@ function renderProducts(filter = 'all') {
   });
 }
 
-// Category Filtering
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -94,7 +84,6 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-// Add to Cart
 window.addToCart = function(productId) {
   const item = cart.find(i => i.id === productId);
   if (item) {
@@ -107,14 +96,13 @@ window.addToCart = function(productId) {
   toggleCart(true);
 };
 
-// Update Cart Drawer UI
 function updateCartUI() {
   cartItemsList.innerHTML = '';
   let total = 0;
   let itemCount = 0;
 
   if (cart.length === 0) {
-    cartItemsList.innerHTML = '<p class="text-muted">Your order cart is currently empty.</p>';
+    cartItemsList.innerHTML = '<p class="text-muted">Your cart is empty.</p>';
   } else {
     cart.forEach(item => {
       total += item.price * item.qty;
@@ -139,7 +127,6 @@ function updateCartUI() {
   cartTotalPrice.textContent = formatCurrency(total);
 }
 
-// Toggle Cart Drawer
 function toggleCart(open) {
   if (open) {
     cartDrawer.classList.add('open');
@@ -154,7 +141,6 @@ openCartBtn.addEventListener('click', () => toggleCart(true));
 closeCartBtn.addEventListener('click', () => toggleCart(false));
 cartOverlay.addEventListener('click', () => toggleCart(false));
 
-// Product Specifications Modal
 window.openSpecModal = function(productId) {
   const p = products.find(prod => prod.id === productId);
   if (p) {
@@ -180,14 +166,13 @@ specModalOverlay.addEventListener('click', () => {
   specModalOverlay.classList.remove('open');
 });
 
-// Checkout via Structured WhatsApp Message
 checkoutWhatsAppBtn.addEventListener('click', () => {
   if (cart.length === 0) {
-    alert("Your cart is empty. Please add electrical products before checking out.");
+    alert("Your cart is empty.");
     return;
   }
 
-  let message = "Hello Engr. Ebenezer Ukpo (CEO Volt-Tech Enterprise),\n\nI would like to place an order for the following electrical equipment:\n\n";
+  let message = "Hello Engr. Ebenezer Ukpo (CEO Volt-Tech Enterprise),\n\nI want to place an order:\n\n";
   let grandTotal = 0;
 
   cart.forEach((item, index) => {
@@ -202,6 +187,4 @@ checkoutWhatsAppBtn.addEventListener('click', () => {
   window.open(whatsappUrl, '_blank');
 });
 
-// Initial Setup
 renderProducts();
-
