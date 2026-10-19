@@ -6,7 +6,366 @@
   <title>Volt-Tech CMS & Analytics Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="./admin-style.css">
+  <style>
+    :root {
+      --bg-main: #070d1e;
+      --bg-sidebar: #0b1328;
+      --bg-card: #0d1730;
+      --bg-card-border: #182545;
+      --accent-orange: #ff521b;
+      --accent-orange-hover: #e04412;
+      --text-white: #ffffff;
+      --text-muted: #8899a6;
+      --green: #10b981;
+      --red: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-white);
+      min-height: 100vh;
+    }
+
+    .dashboard-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+      width: 250px;
+      background-color: var(--bg-sidebar);
+      border-right: 1px solid var(--bg-card-border);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 28px;
+      color: #fff;
+    }
+
+    .brand-icon {
+      color: var(--accent-orange);
+    }
+
+    .brand small {
+      font-size: 10px;
+      background: var(--bg-card-border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-grow: 1;
+    }
+
+    .btn-create {
+      background-color: transparent;
+      border: 1px solid var(--bg-card-border);
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-create:hover {
+      border-color: var(--accent-orange);
+      color: var(--accent-orange);
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-link.active {
+      background-color: var(--accent-orange);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .logout {
+      margin-top: auto;
+      color: #ef4444;
+    }
+
+    .logout:hover {
+      background-color: rgba(239, 68, 68, 0.1);
+    }
+
+    /* Main Content */
+    .main-body {
+      flex-grow: 1;
+      padding: 28px;
+      overflow-y: auto;
+    }
+
+    /* Top Cards Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .metric-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .hero-val {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-label {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .badge-growth {
+      font-size: 12px;
+      color: var(--green);
+      margin-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-val {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .card-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      font-weight: 600;
+    }
+
+    .pill.green { color: var(--green); background-color: rgba(16, 185, 129, 0.1); }
+    .pill.red { color: var(--red); background-color: rgba(239, 68, 68, 0.1); }
+
+    .mt-15 { margin-top: 15px; }
+    .mt-20 { margin-top: 20px; }
+
+    /* Panels & Charts */
+    .panel-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .panel-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .controls-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .dropdown-pill {
+      background-color: var(--bg-main);
+      border: 1px solid var(--bg-card-border);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chart-wrapper-bar {
+      height: 260px;
+      position: relative;
+      width: 100%;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+    }
+
+    .pie-layout {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 20px;
+      padding: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    .chart-wrapper-pie {
+      width: 170px;
+      height: 170px;
+      position: relative;
+    }
+
+    .pie-legend {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .pie-legend li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+    }
+
+    .pie-legend strong {
+      color: #fff;
+      margin-left: auto;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot.orange-dark { background-color: #ff521b; }
+    .dot.orange-med { background-color: #ff7849; }
+    .dot.orange-light { background-color: #ffa07a; }
+
+    /* Country Breakdown List */
+    .country-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 5px;
+    }
+
+    .country-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 35px;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .bar-bg {
+      background-color: var(--bg-main);
+      height: 7px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      background-color: var(--accent-orange);
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    .pct {
+      text-align: right;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 850px) {
+      .dashboard-wrapper {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--bg-card-border);
+      }
+      .nav-menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .main-body {
+        padding: 16px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -35,31 +394,31 @@
       </div>
     </aside>
 
-    <!-- Main Content Area -->
+    <!-- Main Content Body -->
     <main class="main-body">
       
-      <!-- Top Metrics Section -->
+      <!-- Top Metrics Cards -->
       <section class="metrics-grid">
-        <div class="metric-card hero-card">
+        <div class="metric-card">
           <div class="hero-top">
             <span class="hero-val">8,920</span>
             <div class="dropdown-pill">Select month <i class="fas fa-chevron-down"></i></div>
           </div>
           <p class="hero-label">Total visits</p>
-          <span class="badge-growth positive"><i class="fas fa-arrow-trend-up"></i> +1.03% for today</span>
+          <span class="badge-growth"><i class="fas fa-arrow-trend-up"></i> +1.03% for today</span>
         </div>
 
         <div class="metric-card">
           <div class="card-row">
             <div>
-              <span class="card-val">2320</span>
+              <span class="card-val">2,320</span>
               <p class="card-label">Visits for month</p>
             </div>
             <span class="pill green">+8% with previous month</span>
           </div>
           <div class="card-row mt-15">
             <div>
-              <span class="card-val">1208</span>
+              <span class="card-val">1,208</span>
               <p class="card-label">Unique visits per month</p>
             </div>
             <span class="pill red">-11% with previous month</span>
@@ -84,7 +443,7 @@
         </div>
       </section>
 
-      <!-- Main Traffic Chart -->
+      <!-- Site Visits Bar Chart -->
       <section class="panel-card mt-20">
         <div class="panel-header">
           <h3>Site visits</h3>
@@ -132,21 +491,9 @@
           <div class="country-list">
             <div class="country-row"><span>Britain</span><div class="bar-bg"><div class="bar-fill" style="width: 15%;"></div></div><span class="pct">1%</span></div>
             <div class="country-row"><span>Germany</span><div class="bar-bg"><div class="bar-fill" style="width: 45%;"></div></div><span class="pct">8%</span></div>
-            <div class="country-row"><span>Spain</span><div class="bar-bg"><div class="bar-fill" style="width: 25%;"></div></div><span class="pct">4%</span></div>
-            <div class="country-row"><span>Italy</span><div class="bar-bg"><div class="bar-fill" style="width: 20%;"></div></div><span class="pct">3%</span></div>
-            <div class="country-row"><span>Poland</span><div class="bar-bg"><div class="bar-fill" style="width: 75%;"></div></div><span class="pct">18%</span></div>
-            <div class="country-row"><span>Kuwait</span><div class="bar-bg"><div class="bar-fill" style="width: 85%;"></div></div><span class="pct">28%</span></div>
-            <div class="country-row"><span>Serbia</span><div class="bar-bg"><div class="bar-fill" style="width: 90%;"></div></div><span class="pct">33%</span></div>
-            <div class="country-row"><span>Turkey</span><div class="bar-bg"><div class="bar-fill" style="width: 12%;"></div></div><span class="pct">1%</span></div>
-            <div class="country-row"><span>France</span><div class="bar-bg"><div class="bar-fill" style="width: 18%;"></div></div><span class="pct">2%</span></div>
-            <div class="country-row"><span>Georgia</span><div class="bar-bg"><div class="bar-fill" style="width: 30%;"></div></div><span class="pct">4%</span></div>
-          </div>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <script src="./admin-script.js"></script>
-</body>
-</html>
+            <div class="country-row"><span>Spain</span><div class="bar-bg"><div class="bar-fill" style
+cat << 'EOF' > vercel.json
+{
+  "version": 2,
+  "cleanUrls": true
+}
