@@ -3,84 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Volt-Tech | Admin CMS & Analytics</title>
+  <title>Volt-Tech CMS & Analytics Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="admin-style.css">
+  <link rel="stylesheet" href="./admin-style.css">
 </head>
 <body>
 
-  <div class="dashboard-container">
-    
+  <div class="dashboard-wrapper">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="brand-logo">
-        <span class="logo-icon">⚡</span> Volt-Tech <span class="badge">CMS</span>
+      <div class="brand">
+        <i class="fas fa-bolt brand-icon"></i>
+        <span>Volt-Tech <small>CMS</small></span>
       </div>
 
-      <nav class="sidebar-nav">
-        <button class="btn-create" onclick="alert('CMS Article / Product Editor coming next!')">
-          <i class="fas fa-plus-circle"></i> Create New Article
+      <nav class="nav-menu">
+        <button class="btn-create">
+          <i class="fas fa-plus-circle"></i> Create new article
         </button>
 
-        <a href="#stats" class="nav-item active"><i class="fas fa-chart-line"></i> Statistics</a>
-        <a href="#articles" class="nav-item"><i class="fas fa-newspaper"></i> Articles & Blog</a>
-        <a href="#products" class="nav-item"><i class="fas fa-boxes-stacked"></i> Equipment Catalog</a>
-        <a href="#leads" class="nav-item"><i class="fas fa-handshake"></i> Quotes & Leads</a>
-        <a href="#settings" class="nav-item"><i class="fas fa-gear"></i> Settings</a>
+        <a href="#articles" class="nav-link"><i class="fas fa-newspaper"></i> Articles</a>
+        <a href="#sponsors" class="nav-link"><i class="fas fa-handshake"></i> Sponsors</a>
+        <a href="#statistics" class="nav-link active"><i class="fas fa-chart-line"></i> Statistics</a>
+        <a href="#banners" class="nav-link"><i class="fas fa-rectangle-ad"></i> Banners</a>
+        <a href="#items" class="nav-link"><i class="fas fa-boxes-stacked"></i> Items</a>
       </nav>
 
-      <div class="sidebar-footer">
-        <a href="index.html" class="nav-item logout"><i class="fas fa-right-from-bracket"></i> Exit to Main Site</a>
+      <div class="sidebar-bottom">
+        <a href="index.html" class="nav-link logout"><i class="fas fa-arrow-right-from-bracket"></i> Log out</a>
       </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
+    <!-- Main Content Area -->
+    <main class="main-body">
       
-      <!-- Top Metrics -->
+      <!-- Top Metrics Section -->
       <section class="metrics-grid">
-        <div class="metric-card hero-metric">
-          <div class="metric-header">
-            <span>Total Site Visits</span>
+        <div class="metric-card hero-card">
+          <div class="hero-top">
+            <span class="hero-val">8,920</span>
+            <div class="dropdown-pill">Select month <i class="fas fa-chevron-down"></i></div>
           </div>
-          <div class="metric-value">8,920</div>
-          <div class="metric-sub text-success"><i class="fas fa-arrow-up"></i> +1.03% today</div>
+          <p class="hero-label">Total visits</p>
+          <span class="badge-growth positive"><i class="fas fa-arrow-trend-up"></i> +1.03% for today</span>
         </div>
 
         <div class="metric-card">
-          <div class="metric-header">
-            <span>Visits this Month</span>
-            <span class="badge-tag green">+8%</span>
+          <div class="card-row">
+            <div>
+              <span class="card-val">2320</span>
+              <p class="card-label">Visits for month</p>
+            </div>
+            <span class="pill green">+8% with previous month</span>
           </div>
-          <div class="metric-value">2,320</div>
+          <div class="card-row mt-15">
+            <div>
+              <span class="card-val">1208</span>
+              <p class="card-label">Unique visits per month</p>
+            </div>
+            <span class="pill red">-11% with previous month</span>
+          </div>
         </div>
 
         <div class="metric-card">
-          <div class="metric-header">
-            <span>Visits Today</span>
-            <span class="badge-tag green">+8%</span>
+          <div class="card-row">
+            <div>
+              <span class="card-val">80</span>
+              <p class="card-label">Visits for today</p>
+            </div>
+            <span class="pill green">+8% with yesterday</span>
           </div>
-          <div class="metric-value">80</div>
+          <div class="card-row mt-15">
+            <div>
+              <span class="card-val">23</span>
+              <p class="card-label">Unique visits for today</p>
+            </div>
+            <span class="pill red">-11% with yesterday</span>
+          </div>
         </div>
       </section>
 
-      <!-- Traffic Chart -->
-      <section class="chart-section">
-        <div class="section-header">
-          <h3>Site Visits & Inquiry Analytics</h3>
+      <!-- Main Traffic Chart -->
+      <section class="panel-card mt-20">
+        <div class="panel-header">
+          <h3>Site visits</h3>
+          <div class="controls-group">
+            <div class="dropdown-pill">Select site <i class="fas fa-chevron-down"></i></div>
+            <div class="dropdown-pill">Select year type <i class="fas fa-chevron-down"></i></div>
+            <div class="dropdown-pill">Select month <i class="fas fa-chevron-down"></i></div>
+          </div>
         </div>
-        <div class="chart-container">
-          <canvas id="trafficBarChart"></canvas>
+        <div class="chart-wrapper-bar">
+          <canvas id="barChart"></canvas>
         </div>
       </section>
 
-      <!-- Analytics Breakdown -->
-      <section class="analytics-grid">
-        <div class="analytics-card">
-          <h4>Visitor Devices</h4>
-          <div class="pie-chart-box">
-            <canvas id="devicePieChart"></canvas>
+      <!-- Analytics Breakdown Grid -->
+      <section class="breakdown-grid mt-20">
+        <div class="panel-card">
+          <div class="panel-header">
+            <h3>Site visits</h3>
+            <div class="controls-group">
+              <div class="dropdown-pill">Select site <i class="fas fa-chevron-down"></i></div>
+              <div class="dropdown-pill">Select month <i class="fas fa-chevron-down"></i></div>
+            </div>
+          </div>
+          <div class="pie-layout">
+            <div class="chart-wrapper-pie">
+              <canvas id="pieChart"></canvas>
+            </div>
+            <ul class="pie-legend">
+              <li><span class="dot orange-dark"></span> Computer / Laptop <strong>40%</strong></li>
+              <li><span class="dot orange-med"></span> Telephone <strong>40%</strong></li>
+              <li><span class="dot orange-light"></span> Tablet <strong>20%</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <h3>Top countries</h3>
+            <div class="controls-group">
+              <div class="dropdown-pill">Select country <i class="fas fa-chevron-down"></i></div>
+              <div class="dropdown-pill">Select site <i class="fas fa-chevron-down"></i></div>
+            </div>
+          </div>
+          <div class="country-list">
+            <div class="country-row"><span>Britain</span><div class="bar-bg"><div class="bar-fill" style="width: 15%;"></div></div><span class="pct">1%</span></div>
+            <div class="country-row"><span>Germany</span><div class="bar-bg"><div class="bar-fill" style="width: 45%;"></div></div><span class="pct">8%</span></div>
+            <div class="country-row"><span>Spain</span><div class="bar-bg"><div class="bar-fill" style="width: 25%;"></div></div><span class="pct">4%</span></div>
+            <div class="country-row"><span>Italy</span><div class="bar-bg"><div class="bar-fill" style="width: 20%;"></div></div><span class="pct">3%</span></div>
+            <div class="country-row"><span>Poland</span><div class="bar-bg"><div class="bar-fill" style="width: 75%;"></div></div><span class="pct">18%</span></div>
+            <div class="country-row"><span>Kuwait</span><div class="bar-bg"><div class="bar-fill" style="width: 85%;"></div></div><span class="pct">28%</span></div>
+            <div class="country-row"><span>Serbia</span><div class="bar-bg"><div class="bar-fill" style="width: 90%;"></div></div><span class="pct">33%</span></div>
+            <div class="country-row"><span>Turkey</span><div class="bar-bg"><div class="bar-fill" style="width: 12%;"></div></div><span class="pct">1%</span></div>
+            <div class="country-row"><span>France</span><div class="bar-bg"><div class="bar-fill" style="width: 18%;"></div></div><span class="pct">2%</span></div>
+            <div class="country-row"><span>Georgia</span><div class="bar-bg"><div class="bar-fill" style="width: 30%;"></div></div><span class="pct">4%</span></div>
           </div>
         </div>
       </section>
@@ -88,6 +147,6 @@
     </main>
   </div>
 
-  <script src="admin-script.js"></script>
+  <script src="./admin-script.js"></script>
 </body>
 </html>
