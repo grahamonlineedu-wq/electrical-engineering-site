@@ -1,0 +1,21 @@
+[build]
+  publish = "."
+  # The site is plain static HTML; Next.js is not a dependency, so the UI's
+  # `next build` command fails. No build step is needed.
+  command = "echo 'Static site: no build step required'"
+
+  [build.environment]
+    # Leftover Next.js scaffolding (next.config.ts, app/) triggers the Next.js
+    # runtime, which would fail without a .next build output.
+    NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+# netlify-plugin-inline-critical-css (installed from the Netlify UI) crashes on
+# current Node versions with "HierarchyRequestError: Invalid insertion of STYLE
+# node in #document node", even for valid HTML. The pages already inline their
+# own CSS, so point the plugin at a file pattern that matches nothing to make it
+# a no-op. Remove the plugin in the Netlify UI to drop this block.
+[[plugins]]
+  package = "netlify-plugin-inline-critical-css"
+
+  [plugins.inputs]
+    fileFilter = ["*.skip-inline-critical-css"]
