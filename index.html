@@ -103,3 +103,31 @@
 
 </body>
 </html>
+
+<script>
+async function loadPublishedArticles() {
+  const container = document.getElementById('blog-feed-container');
+  if (!container) return;
+
+  try {
+    const response = await fetch('/api/articles');
+    const data = await response.json();
+
+    if (data.success && data.articles.length > 0) {
+      container.innerHTML = data.articles.map(article => `
+        <div class="service-card" style="background:#0d1730; border:1px solid #182545; border-radius:12px; padding:20px; margin-bottom:20px;">
+          ${article.image_url ? `<img src="${article.image_url}" alt="${article.title}" style="width:100%; height:200px; object-fit:cover; border-radius:8px; margin-bottom:14px;">` : ''}
+          <span style="font-size:11px; background:#182545; color:#8899a6; padding:4px 8px; border-radius:4px; text-transform:uppercase;">${article.category}</span>
+          <h3 style="color:#fff; margin:12px 0 6px 0; font-size:18px;">${article.title}</h3>
+          <p style="font-size:12px; color:#8899a6; margin-bottom:12px;">By ${article.author} • ${new Date(article.created_at).toLocaleDateString()}</p>
+          <p style="color:#cbd5e1; font-size:14px; line-height:1.6;">${article.content.substring(0, 150)}...</p>
+        </div>
+      `).join('');
+    }
+  } catch (error) {
+    console.error("Error loading blog feed:", error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadPublishedArticles);
+</script>

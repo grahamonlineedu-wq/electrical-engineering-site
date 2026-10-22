@@ -50,3 +50,34 @@ app.get('/api/products', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Volt-Tech Enterprise server running live on port ${PORT}`);
 });
+
+// Volt-Tech CMS API Route - Publish New Article
+app.post('/api/articles', async (req, res) => {
+  try {
+    const { title, category, author, tags, image_url, content } = req.body;
+    
+    const query = `
+      INSERT INTO articles (title, category, author, tags, image_url, content, created_at) 
+      VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING *;
+    `;
+    const values = [title, category, author, tags, image_url, content];
+    
+    const result = await pool.query(query, values);
+    
+    res.status(201).json({ success: true, message: "Article published successfully to live database!", article: result.rows[0] });
+  } catch (err) {
+    console.error("API Error:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Volt-Tech CMS API Route - Fetch Published Articles for Frontend
+app.get('/api/articles', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM articles ORDER BY created_at DESC');
+    res.json({ success: true, articles: result.rows });
+  } catch (err) {
+    console.error("Fetch Error:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
