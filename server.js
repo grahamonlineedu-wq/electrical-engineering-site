@@ -35,7 +35,7 @@ app.get('/api/articles', async (req, res) => {
   }
 });
 
-// POST: Publish a new article from CMS dashboard
+// POST: Publish a manual article from CMS dashboard
 app.post('/api/articles', async (req, res) => {
   try {
     const { title, category, author, tags, image_url, content } = req.body;
@@ -60,61 +60,64 @@ app.post('/api/articles', async (req, res) => {
 });
 
 // ==========================================
-// 2. AI GENERATION ENDPOINTS
+// 2. AUTONOMOUS AI AGENT & PUBLISHER
 // ==========================================
 
-// POST: Generate article draft using Groq (Llama 3.3)
-app.post('/api/generate-groq', async (req, res) => {
+// POST: Autonomous AI Post Generator & Auto-Publisher
+app.post('/api/ai/auto-publish', async (req, res) => {
   if (!groq) {
-    return res.status(500).json({ success: false, error: "GROQ_API_KEY is not configured in .env" });
+    return res.status(500).json({ success: false, error: "GROQ_API_KEY is not configured in environment variables" });
   }
 
   try {
     const { topic } = req.body;
+    if (!topic) {
+      return res.status(400).json({ success: false, error: "Topic is required" });
+    }
+
+    const systemPrompt = `
+You are an expert electrical engineering content automation agent for Volt-Tech Enterprise. 
+Given a topic, generate a complete, highly professional technical blog post.
+You MUST output your response strictly as a valid JSON object with no markdown code blocks, using this exact structure:
+{
+  "title": "Engaging and professional article title",
+  "category": "Substation", 
+  "author": "Engr. Ebenezer Ukpo",
+  "tags": "transformers, electrical, industrial, maintenance",
+  "image_url": "https://evernewtransformer.com/wp-content/uploads/2026/06/Oil-Immersed-Power-Transformer-Complete-Guide-for-Industrial-and-Utility-Applications.webp",
+  "content": "Full, detailed technical article body with multiple paragraphs explaining engineering concepts and concluding with Volt-Tech services."
+}
+Category must be one of: Transformers, Control Panels, Substation, Safety.
+`;
+
     const completion = await groq.chat.completions.create({
       messages: [
-        {
-          role: 'system',
-          content: 'You are an expert electrical engineer writing technical, highly detailed blog posts for Volt-Tech Enterprise.'
-        },
-        {
-          role: 'user',
-          content: `Write a technical article on: ${topic}`
-        }
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: `Generate post for topic: ${topic}` }
       ],
       model: 'llama-3.3-70b-versatile',
+      response_format: { type: "json_object" }
     });
 
-    res.json({ success: true, text: completion.choices[0].message.content });
-  } catch (err) {
-    console.error("Groq AI Error:", err);
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
+    const aiData = JSON.parse(completion.choices[0].message.content);
 
-// POST: Generate article draft using Gemini API
-app.post('/api/generate-gemini', async (req, res) => {
-  const geminiKey = process.env.GEMINI_API_KEY;
-  if (!geminiKey) {
-    return res.status(500).json({ success: false, error: "GEMINI_API_KEY is not configured in .env" });
-  }
+    // Insert AI-generated post directly into Neon PostgreSQL database
+    const query = `
+      INSERT INTO articles (title, category, author, tags, image_url, content, created_at) 
+      VALUES ($1, $2, $3, $4, $5, $6, NOW()) 
+      RETURNING *;
+    `;
+    const values = [aiData.title, aiData.category, aiData.author, aiData.tags, aiData.image_url, aiData.content];
+    const dbResult = await pool.query(query, values);
 
-  try {
-    const { topic } = req.body;
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: `Write an industrial electrical article on: ${topic}` }] }]
-      })
+    res.json({ 
+      success: true, 
+      message: "AI Agent successfully generated and auto-published post!", 
+      article: dbResult.rows[0] 
     });
 
-    const data = await response.json();
-    const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
-    
-    res.json({ success: true, text: generatedText });
   } catch (err) {
-    console.error("Gemini AI Error:", err);
+    console.error("AI Auto-Publish Error:", err);
     res.status(500).json({ success: false, error: err.message });
   }
 });
