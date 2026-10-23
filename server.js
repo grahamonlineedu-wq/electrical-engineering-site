@@ -11,10 +11,12 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-// PostgreSQL Connection (Neon DB)
+// PostgreSQL Connection (Neon DB with strict SSL certificate verification)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
+  ssl: {
+    rejectUnauthorized: true
+  }
 });
 
 // Initialize Groq AI SDK
